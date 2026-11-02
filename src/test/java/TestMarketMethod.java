@@ -72,20 +72,20 @@ public class TestMarketMethod {
 
     @Test
     void testAddItemNotInCatalog() {
-        assertThrows(IllegalArgumentException.class,
+        assertThrows(IllegalStateException.class,
                 () -> cart.addItem("unknown", 1));
     }
 
     @Test
     void testAddItemExceedsStock() {
-        assertThrows(IllegalStateException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> cart.addItem("p1", 11));
     }
 
     @Test
     void testAddItemPartialExceedsStock() {
         cart.addItem("p1", 8);
-        assertThrows(IllegalStateException.class,
+        assertThrows(IllegalArgumentException.class,
                 () -> cart.addItem("p1", 3));
     }
 
