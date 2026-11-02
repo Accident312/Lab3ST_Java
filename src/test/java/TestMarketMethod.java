@@ -89,5 +89,37 @@ public class TestMarketMethod {
                 () -> cart.addItem("p1", 3));
     }
 
+    @Test
+    void testRemovePartialQuantity() {
+        cart.addItem("p1", 5);
+        cart.removeItem("p1", 2);
+        assertEquals(3000.0, cart.calculateTotal());
+    }
 
+    @Test
+    void testRemoveFullQuantity() {
+        cart.addItem("p1", 5);
+        cart.removeItem("p1", 5);
+        assertEquals(0.0, cart.calculateTotal());
+    }
+
+    @Test
+    void testRemoveByNull() {
+        cart.addItem("p1", 5);
+        cart.removeItem("p1", null);
+        assertEquals(0.0, cart.calculateTotal());
+    }
+
+    @Test
+    void testRemoveNotInCart() {
+        assertThrows(IllegalArgumentException.class,
+                () -> cart.removeItem("p1",1));
+    }
+
+    @Test
+    void testRemoveInvalidQuantity() {
+        cart.addItem("p1", 5);
+        assertThrows(IllegalArgumentException.class,
+                () -> cart.removeItem("p1", 0));
+    }
 }
