@@ -122,4 +122,37 @@ public class TestMarketMethod {
         assertThrows(IllegalArgumentException.class,
                 () -> cart.removeItem("p1", 0));
     }
+
+    @Test
+    void testCalculateEmptyCart() {
+        assertEquals(0.0, cart.calculateTotal());
+    }
+
+    @Test
+    void testCalculateWithoutPromo() {
+        cart.addItem("p1", 2);
+        cart.addItem("p2", 4);
+        assertEquals(2200.0, cart.calculateTotal());
+    }
+
+    @Test
+    void testApplyValidPromo() {
+        cart.applyPromoCode("DISCOUNT10");
+        cart.addItem("p1", 2);
+        assertEquals(1800.0, cart.calculateTotal());
+    }
+
+    @Test
+    void testApplyInvalidPromo() {
+        assertThrows(IllegalStateException.class,
+                () -> cart.applyPromoCode("FAKE"));
+    }
+
+    @Test
+    void testClearPromo() {
+        cart.addItem("p1", 2);
+        cart.applyPromoCode("DISCOUNT10");
+        cart.clearPromoCode();
+        assertEquals(2000.0, cart.calculateTotal());
+    }
 }
