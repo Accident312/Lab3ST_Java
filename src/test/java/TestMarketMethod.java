@@ -39,5 +39,55 @@ public class TestMarketMethod {
                 () -> new Product("p1", "Товар", -10.0, 10));
     }
 
+    @Test
+    void testCreateProductNegativeStock() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new Product("p1", "Товар", 100.0, -1));
+    }
+
+    @Test
+    void testAddItemSuccess() {
+        cart.addItem("p1", 3);
+        assertEquals(3000.0, cart.calculateTotal());
+    }
+
+    @Test
+    void testAddItemIncreaseQuantity() {
+        cart.addItem("p1", 3);
+        cart.addItem("p1", 2);
+        assertEquals(5000.0, cart.calculateTotal());
+    }
+
+    @Test
+    void testAddItemZeroQuantity() {
+        assertThrows(IllegalArgumentException.class,
+                () -> cart.addItem("p1", 0));
+    }
+
+    @Test
+    void testAddItemNegativeQuantity() {
+        assertThrows(IllegalArgumentException.class,
+                () -> cart.addItem("p1", -5));
+    }
+
+    @Test
+    void testAddItemNotInCatalog() {
+        assertThrows(IllegalArgumentException.class,
+                () -> cart.addItem("unknown", 1));
+    }
+
+    @Test
+    void testAddItemExceedsStock() {
+        assertThrows(IllegalStateException.class,
+                () -> cart.addItem("p1", 11));
+    }
+
+    @Test
+    void testAddItemPartialExceedsStock() {
+        cart.addItem("p1", 8);
+        assertThrows(IllegalStateException.class,
+                () -> cart.addItem("p1", 3));
+    }
+
 
 }
